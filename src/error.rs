@@ -4,14 +4,14 @@ pub type Error = Box<dyn error::Error + Send + Sync>;
 
 #[derive(Debug)]
 pub enum ParsingError {
-    BadHttpVersion,
-    BadMethod,
+	BadHttpVersion,
+	BadMethod,
 }
 
 impl Display for ParsingError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", self)
-    }
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{:?}", self)
+	}
 }
 
 impl error::Error for ParsingError {}

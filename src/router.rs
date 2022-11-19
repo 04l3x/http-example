@@ -3,54 +3,49 @@ use std::{collections::HashMap, fmt::Debug};
 
 type Handler = fn(Request) -> Response;
 
-// #[derive(Debug)]
-// struct Routes<'r> {
-//     method: Method,
-//     routes: HashMap<&'r str, Handler>,
-// }
-
 #[derive(Debug, Default)]
-pub struct Router<'r> {
-    get: HashMap<&'r str, Handler>,
-    post: HashMap<&'r str, Handler>,
+pub struct Router {
+	routes: HashMap<Route, Handler>,
 }
 
-impl<'r> Router<'r> {
-    pub(crate) fn register(&mut self, route: &'r Route, handler: Handler) {
-        match route.method() {
-            Method::Get => self.get.entry(route.path()).or_insert(handler),
-            Method::Post => self.post.entry(route.path()).or_insert(handler),
-        };
-    }
+impl Router {
+	pub(crate) fn register(&mut self, route: &Route, handler: Handler) {
+		self.routes.entry(route.clone()).or_insert(handler);
+	}
 
-    pub fn get(&self) -> &HashMap<&'r str, Handler> {
-        &self.get
-    }
-
-    pub fn post(&self) -> &HashMap<&'r str, Handler> {
-        &self.post
-    }
+	pub fn routes(&self) -> &HashMap<Route, Handler> {
+		&self.routes
+	}
 }
 
-#[derive(Debug)]
+impl From<&Request> for Route {
+	fn from(req: &Request) -> Self {
+		Self {
+			method: *req.method(),
+			path: req.path().clone(),
+		}
+	}
+}
+
+#[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub struct Route {
-    method: Method,
-    path: String,
+	method: Method,
+	path: String,
 }
 
 impl Route {
-    pub(crate) fn new(method: Method, path: &str) -> Self {
-        Self {
-            method,
-            path: path.to_string(),
-        }
-    }
+	pub(crate) fn new(method: Method, path: &str) -> Self {
+		Self {
+			method,
+			path: path.to_string(),
+		}
+	}
 
-    fn method(&self) -> &Method {
-        &self.method
-    }
+	/*pub fn method(&self) -> &Method {
+		&self.method
+	}
 
-    fn path(&self) -> &String {
-        &self.path
-    }
+	pub fn path(&self) -> &String {
+		&self.path
+	}*/
 }
