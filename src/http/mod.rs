@@ -66,8 +66,8 @@ impl TryFrom<String> for Version {
 impl Display for Version {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let v = format!("{:?}", self);
-		let v = v.replace("V", "/");
-		let v = v.replace("_", ".");
+		let v = v.replace('V', "/");
+		let v = v.replace('_', ".");
 		write!(f, "HTTP{}", v)
 	}
 }

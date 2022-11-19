@@ -13,7 +13,7 @@ impl Parser {
 	pub fn raw_to_request(raw: Vec<String>) -> Result<Request> {
 		let binding = raw[0].clone();
 
-		let starts = binding.split(" ").collect::<Vec<_>>();
+		let starts = binding.split(' ').collect::<Vec<_>>();
 
 		let [method, path, version] = [starts[0], starts[1], starts[2]];
 

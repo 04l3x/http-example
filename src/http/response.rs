@@ -9,11 +9,7 @@ pub struct Response {
 
 impl Response {
 	pub fn new(version: Version, status: Status, content: Option<&str>) -> Self {
-		let content = if let Some(content) = content {
-			Some(content.to_owned())
-		} else {
-			None
-		};
+		let content = content.map(|c| c.to_owned());
 
 		Self {
 			version,
